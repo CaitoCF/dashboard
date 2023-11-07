@@ -61,8 +61,56 @@ p {
     cursor: pointer;
     margin-left: 5px;
     margin-right: 5px;
-  }
-  
-  .btn:hover {
+}
+
+.btn:hover {
     background-color: $color2;
-  }
+}
+
+.modal-content {
+    display: flex;
+    flex-direction: column;
+    border: none;
+
+    h1,
+    p {
+        margin-bottom: 16px;
+    }
+
+    h1 {
+        font-size: 32px;
+        margin-bottom: 50px;
+        color: $color1;
+    }
+
+    p {
+        font-size: 18px;
+    }
+
+    button {
+        width: 20%;
+        align-self: center;
+        background-color: $color1;
+        border: solid 1px;
+        margin-top: 30px;
+    }
+    
+    .form-group {
+        div {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 30px;
+            gap: .5rem;
+            align-items: center;
+        }
+
+        input {
+            width: 70%;
+        }
+    }
+}
+
+td {
+    text-align: center; 
+    vertical-align: middle;
+}

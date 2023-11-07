@@ -6,9 +6,8 @@
                 <hr>
             </header>
             <div class="card-content">
-                <p>Products: 10</p>
-                <p>Services: 10</p>
-                <p class="total">Total Value: $10.00</p>
+                <p>Total Sales: {{ data.daySales.total_sales }}</p>
+                <p class="total">Total Value: ${{ data.daySales.total_value }}</p>
             </div>
         </div>
         <div class="card">
@@ -17,9 +16,8 @@
                 <hr>
             </header>
             <div class="card-content">
-                <p>Products: 10</p>
-                <p>Services: 10</p>
-                <p class="total">Total Value: $10.00</p>
+                <p>Total Sales: {{ data.weekSales.total_sales }}</p>
+                <p class="total">Total Value: ${{ data.weekSales.total_value }}</p>
             </div>
         </div>
         <div class="card">
@@ -28,9 +26,8 @@
                 <hr>
             </header>
             <div class="card-content">
-                <p>Products: 10</p>
-                <p>Services: 10</p>
-                <p class="total">Total Value: $10.00</p>
+                <p>Total Sales: {{ data.monthSales.total_sales }}</p>
+                <p class="total">Total Value: ${{ data.monthSales.total_value }}</p>
             </div>
         </div>
         <div class="card">
@@ -39,9 +36,8 @@
                 <hr>
             </header>
             <div class="card-content">
-                <p>Products: 10</p>
-                <p>Services: 10</p>
-                <p class="total">Total Value: $10.00</p>
+                <p>Total Sales: {{ data.yearSales.total_sales }}</p>
+                <p class="total">Total Value: ${{ data.yearSales.total_value }}</p>
             </div>
         </div>
     </div>
@@ -51,6 +47,15 @@
 
 export default {
     name: 'CardsComponent',
+    props: ['data'],
+    data() {
+        return {
+
+        }
+    },
+    mounted() {
+        console.log(this.data)
+    }
 }
 </script>
 

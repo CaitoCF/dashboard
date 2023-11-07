@@ -34,7 +34,7 @@
                             <td>{{ row.creation_date }}</td>
                             <td>
                                 <button @click="edit_modal(row)" class="btn"><i class="fa fa-pen" style="color: white;"></i></button>
-                                <button class="btn"><i class="fa fa-trash" style="color: white;"></i></button>
+                                <button @click="delete_row(row._id)" class="btn"><i class="fa fa-trash" style="color: white;"></i></button>
                             </td>
                         </tr>
                     </tbody>
@@ -126,7 +126,7 @@ export default {
                     icon: "success",
                     showCancelButton: false,
                     showConfirmButton: true,
-                    confirmButtonColor: "#a5dc86",
+                    confirmButtonColor: "green",
                     timer: 2000,
                 });
             } else {
@@ -136,14 +136,15 @@ export default {
                     icon: "error",
                     showCancelButton: false,
                     showConfirmButton: true,
-                    confirmButtonColor: "#f27474",
+                    confirmButtonColor: "red",
                     timer: 2000,
                 });
             }
+            this.search_data();
         },
         async search_data() {
             let search = this.search;
-            let response = await axios.post('http://localhost:8080/api/product_search', {params: {search}});
+            let response = await axios.get('http://localhost:8080/api/product_search', {params: {search}});
             this.rows = response.data.data;
         },
         edit_modal(row) {
@@ -154,14 +155,14 @@ export default {
             let response = await axios.post('http://localhost:8080/api/product_edit', this.edit_product);
             response = response.data.success;
             if (response == true) {
-                this.toggleModalCreate();
+                this.toggleModalEdit();
                 Swal.fire({
                     title: "Success",
                     text: "Product saved",
                     icon: "success",
                     showCancelButton: false,
                     showConfirmButton: true,
-                    confirmButtonColor: "#a5dc86",
+                    confirmButtonColor: "green",
                     timer: 2000,
                 });
             } else {
@@ -175,6 +176,32 @@ export default {
                     timer: 2000,
                 });
             }
+            this.search_data();
+        },
+        async delete_row(id) {
+            Swal.fire({
+                title: "",
+                text: "Are you sure you want do delete this product?",
+                showCancelButton: true,
+                showConfirmButton: true,
+                cancelButtonColor: 'red',
+                confirmButtonColor: 'green'
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    await axios.post('http://localhost:8080/api/product_delete', {id: id});
+                        Swal.fire({
+                        title: "Success",
+                        text: "Product deleted",
+                        icon: "success",
+                        showCancelButton: false,
+                        showConfirmButton: true,
+                        confirmButtonColor: "green",
+                        timer: 2000,
+                    });
+
+                    this.search_data();
+                }
+            });
         }
     },
     async mounted() {

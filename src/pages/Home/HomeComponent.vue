@@ -1,7 +1,7 @@
 <template>
     <DashboardComponent :title="title" :icon="icon">
         <div class="page-content">
-            <CardsComponent />
+            <CardsComponent :data="data" v-if="loaded"/>
             <canvas id="myChart1" height="80" style="margin-top: 100px;"></canvas>
             <canvas id="myChart2" height="80" style="margin-top: 100px;"></canvas>
         </div>
@@ -12,6 +12,7 @@
 import DashboardComponent from '../Dashboard/DashboardComponent.vue';
 import CardsComponent from '../../components/Cards/CardsComponent.vue';
 import Chart from 'chart.js/auto';
+import axios from 'axios';
 
 export default {
     name: 'HomeComponent',
@@ -19,18 +20,23 @@ export default {
     data() {
         return {
             title: "Home",
-            icon: "fa-house"
+            icon: "fa-house",
+            data: [],
+            loaded: false,
         }
     },
-    mounted() {
+    async mounted() {
+        let response = await axios.get('http://localhost:8080/api/home');
+        this.data = response.data;
+        this.loaded = true;
         const canvas1 = document.getElementById('myChart1');
         const myChart = new Chart(canvas1, {
             type: 'line',
             data: {
-                labels: ['January', 'Febuary', 'March', 'April', 'May'],
+                labels: this.data.months,
                 datasets: [{
                     label: 'Sales per Month',
-                    data: [1, 3, 4, 2, 5],
+                    data: this.data.salesMonth,
                     backgroundColor: '#d97f76',
                     borderColor: '#b4585d',
                     borderWidth: 2
@@ -49,10 +55,10 @@ export default {
         const myChart2 = new Chart(canvas2, {
             type: 'bar',
             data: {
-                labels: ['Product1', 'Service2', 'Product5', 'Service1'],
+                labels: this.data.bestSellers.map(m => m.name),
                 datasets: [{
                     label: 'Best-Selling of the Year',
-                    data: [4, 1, 3, 2],
+                    data: this.data.bestSellers.map(m => m.count),
                     backgroundColor: '#d97f76',
                     borderColor: '#b4585d',
                     borderWidth: 2
